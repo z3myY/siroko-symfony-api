@@ -1,0 +1,22 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: API SIROKO
+            description: BEST CYCLING AND FITNESS CLOTHINGS!
+            version: 1.0.0
+        components:
+            schemas:
+                ItemResponse:
+                    type: object
+                    properties:
+                        id:
+                            {type: integer, example: 12}
+                        name:
+                            {type: string, example: "SIROKO M2 BLACK"}
+    areas: # to filter documented areas
+        default:
+            path_patterns: # Accepts routes under /api except /api/doc
+                - ^/api(?!/doc$)
+        public:
+            with_annotation: true
+        

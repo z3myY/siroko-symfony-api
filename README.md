@@ -46,6 +46,12 @@ Como mejora de la aplicación he añadido lo siguiente:
 
 ## Instalación
 
+### Version corta despliegue
+
+1. Desde donde quieras clonar el proyecto lanzar el comando `make clone-deploy`, el cual clonará el repo y deplegará la APP.
+
+### Version larga despliegue
+
 1. Clonar el repo 😁, lanzando el comando `git clone https://github.com/z3myY/siroko-symfony-api.git` en la carpeta que quieras en local.
 2. Crear el archivo `./.docker/.env.nginx.local` usando `./.docker/.env.nginx` como plantilla. El valor de la variable `NGINX_BACKEND_DOMAIN` es el `server_name` usado en NGINX. Para no complicarme simplemente le he puesto `localhost`.
 3. Ir a la carpeta `./docker` y ejecutar `docker compose up -d` para levantar los contenedores.
@@ -57,7 +63,7 @@ Como mejora de la aplicación he añadido lo siguiente:
 
 ![Alt text](image.png)
 
-6. Con esto ya podríamos acceder a nuestra [O20 API](http://localhost/siroko/v1/public/doc)! 
+#### ¡Con esto ya podríamos acceder a nuestra [SIROKO API](http://localhost/siroko/v1/public/doc)!
 
 # Requisitos prueba técnica
 

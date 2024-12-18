@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Siroko Cart{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Products</h2>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Sports T-Shirt</h5>
+                    <p class="card-text">$25.00</p>
+                    <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Running Shorts</h5>
+                    <p class="card-text">$30.00</p>
+                    <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <!-- Add more products as needed -->
+        </div>
+        <div class="col-md-4">
+            <h2>Your Cart</h2>
+            <ul class="list-group" id="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </ul>
+            <h4 class="mt-3">Total: <span id="total-price">$0.00</span></h4>
+            <button class="btn btn-success mt-3" id="checkout">Checkout</button>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{{ asset('js/scripts.js') }}"></script>
+{% endblock %}
