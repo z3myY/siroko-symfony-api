@@ -24,6 +24,21 @@ class ProductController extends AbstractController
     {
     }
 
+    #[Route('/products', name: 'products', methods: ['GET'])]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Returns the list of products',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: '#/components/schemas/ProductResponse')
+        )
+    )]
+    public function listProduct() : JsonResponse 
+    {
+        $products = $this->productRepository->list();
+        return new JsonResponse($products, JsonResponse::HTTP_OK, ['Content-Type' => 'application/json']);
+    }
+
     #[Route('/products/{id}', name: 'product', methods: ['GET'])]
     #[OA\Response(
         response: Response::HTTP_OK,
@@ -33,7 +48,8 @@ class ProductController extends AbstractController
             items: new OA\Items(ref: '#/components/schemas/ProductResponse')
         )
     )]    
-    public function findProduct(int $id) : JsonResponse {
+    public function findProduct(int $id) : JsonResponse 
+    {
         $product = $this->productRepository->findById($id);
 
         if (!$product) {

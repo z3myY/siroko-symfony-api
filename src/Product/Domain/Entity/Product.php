@@ -8,7 +8,6 @@ use App\Shared\Domain\AggregateRoot;
 use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;
 use App\Shared\Domain\ValueObject\StringValueObject;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Product
@@ -22,9 +21,9 @@ final class Product extends AggregateRoot
         private StringValueObject $description,
         private FloatValueObject $price,
         private IntValueObject $stock,
-        private ?StringValueObject $imageUrl,
         private StringValueObject $category,
         private StringValueObject $sku,
+        private ?StringValueObject $imageUrl = null,
         private ?StringValueObject $availability = null,
         private ?FloatValueObject $discount = null,
         private ?StringValueObject $brand = null,
@@ -62,7 +61,7 @@ final class Product extends AggregateRoot
 
     public function imageUrl(): ?StringValueObject
     {
-        return $this->imageUrl;
+        return $this->imageUrl && $this->imageUrl->value() !== '' ? $this->imageUrl : null;
     }
 
     public function category(): StringValueObject
@@ -77,7 +76,7 @@ final class Product extends AggregateRoot
 
     public function availability(): ?StringValueObject
     {
-        return $this->availability;
+        return $this->availability && $this->availability->value() !== '' ? $this->availability : null;
     }
 
     public function discount(): ?FloatValueObject
@@ -87,7 +86,7 @@ final class Product extends AggregateRoot
 
     public function brand(): ?StringValueObject
     {
-        return $this->brand;
+        return $this->brand && $this->brand->value() !== '' ? $this->brand : null;
     }
 
     public function rating(): ?FloatValueObject
@@ -108,12 +107,12 @@ final class Product extends AggregateRoot
             'description' => $this->description->value(),
             'price' => $this->price->value(),
             'stock' => $this->stock->value(),
-            'imageUrl' => $this->imageUrl ? $this->imageUrl->value() : null,
             'category' => $this->category->value(),
             'sku' => $this->sku->value(),
-            'availability' => $this->availability ? $this->availability->value() : null,
+            'imageUrl' => $this->imageUrl && $this->imageUrl->value() !== '' ? $this->imageUrl->value() : null,
+            'availability' => $this->availability && $this->availability->value() !== '' ? $this->availability->value() : null,
             'discount' => $this->discount ? $this->discount->value() : null,
-            'brand' => $this->brand ? $this->brand->value() : null,
+            'brand' => $this->brand && $this->brand->value() !== '' ? $this->brand->value() : null,
             'rating' => $this->rating ? $this->rating->value() : null,
             'reviews' => $this->reviews ? $this->reviews->value() : null,
         ];
@@ -125,9 +124,9 @@ final class Product extends AggregateRoot
         StringValueObject $description,
         FloatValueObject $price,
         IntValueObject $stock,
-        ?StringValueObject $imageUrl,
         StringValueObject $category,
         StringValueObject $sku,
+        ?StringValueObject $imageUrl,
         ?StringValueObject $availability = null,
         ?FloatValueObject $discount = null,
         ?StringValueObject $brand = null,
@@ -140,9 +139,9 @@ final class Product extends AggregateRoot
             description: $description,
             price: $price,
             stock: $stock,
-            imageUrl: $imageUrl,
             category: $category,
             sku: $sku,
+            imageUrl: $imageUrl,
             availability: $availability,
             discount: $discount,
             brand: $brand,

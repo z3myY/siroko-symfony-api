@@ -16,6 +16,11 @@ class IntValueObject implements ValueObjectInterface
         return new static($value);
     }
 
+    public static function fromString(string $value): static
+    {
+        return new static((int)$value);
+    }
+
     public static function fromNullable(?int $value): static|null
     {
         return $value !== null ? new static($value) : null;

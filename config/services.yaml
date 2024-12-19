@@ -23,14 +23,3 @@ services:
     # please note that last definitions always *replace* previous ones
     App\EventListener\Exception\ExceptionHandler:
        tags: [kernel.event_listener]
-
-    # Configuración para el repositorio ItemRepository
-    App\Item\Infrastructure\Repository\ItemRepository:
-        arguments:
-            $entityManager: '@doctrine.orm.entity_manager'
-            $connection: '@doctrine.dbal.default_connection'
-
-    # Configuración para el bounded context de Cart
-    App\Cart\:
-        resource: '../src/Cart/*'
-        exclude: '../src/Cart/{Domain,Infrastructure}'

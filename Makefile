@@ -9,6 +9,9 @@ create-env:
 
 up:
 	cd .docker && docker compose up -d
+    
+test:
+	docker exec -it siroko_api-php-1 php bin/phpunit
 
 install:
 	docker exec -it siroko_api-php-1 composer install

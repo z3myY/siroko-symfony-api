@@ -4,66 +4,69 @@ declare(strict_types=1);
 
 namespace App\Cart\Infrastructure\Controller;
 
-use App\Product\Domain\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Cart\Application\Update\AddProductToCart;
+use App\Cart\Application\Update\RemoveProductFromCart;
+use App\Cart\Application\Update\ClearCart;
+use App\Cart\Application\Update\GetCart;
+use App\Cart\Application\Create\AddCart;
+use App\Shared\Domain\ValueObject\IntValueObject;
+use Nelmio\ApiDocBundle\Annotation as Nelmio;
+use OpenApi\Attributes as OA;
 
+/**
+ * Class CartController
+ * @package App\Cart\Infrastructure\Controller
+ */
+#[Nelmio\Areas(['public'])]
+#[OA\Tag('Carts')]
 class CartController extends AbstractController
 {
-
-    private ProductRepositoryInterface $productRepository;
-
-    public function __construct(ProductRepositoryInterface $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }   
-
-    #[Route('/cart', name: 'cart_index')]
-    public function index(): Response
-    {
-        return $this->render('cart/index.html.twig');
+    public function __construct(
+        private AddProductToCart $addProductToCart,
+        private RemoveProductFromCart $removeProductFromCart,
+        private ClearCart $clearCart,
+        private GetCart $getCart,
+        private AddCart $addCart
+    ) {
     }
 
-    #[Route('/product', name: 'product_list')]
-    public function listProduct(): JsonResponse
+    #[Route('/carts/{id}', name: 'cart', methods: ['GET'])]
+    public function cart(int $id): JsonResponse
     {
-        // $products = [
-        //     [
-        //         'id' => 1,
-        //         'name' => 'Product 1',
-        //         'price' => 1000,
-        //         'stock' => 10,
-        //         'category' => 'Category 1',
-        //         'sku' => 'SKU1',
-        //     ],
-        //     [
-        //         'id' => 2,
-        //         'name' => 'Product 2',
-        //         'price' => 2000,
-        //         'stock' => 20,
-        //         'category' => 'Category 2',
-        //         'sku' => 'SKU2',
-        //     ],
-        //     [
-        //         'id' => 3,
-        //         'name' => 'Product 3',
-        //         'price' => 3000,
-        //         'stock' => 30,
-        //         'category' => 'Category 3',
-        //         'sku' => 'SKU3',
-        //     ],
-        // ];
+        $cart = $this->getCart->execute(IntValueObject::fromInt($id));
+        return new JsonResponse($cart, JsonResponse::HTTP_OK);
+    }
 
-        try {
-            $products = $this->productRepository->list();
-            dd($products);
-            return new JsonResponse($products, Response::HTTP_OK, ['Content-Type' => 'application/json']);
-        } catch (\Exception $e) {
-    
-            // Return a JSON response with the error message
-            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+    #[Route('/carts', name: 'new_cart', methods: ['POST'])]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            type: 'object',
+            properties: [
+                new OA\Property(property: 'userId', type: 'integer')
+            ]
+        )
+    )]
+    public function newCart(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $cartCreated = $this->addCart->execute($data['userId']);
+
+        if (!$cartCreated) {
+            return new JsonResponse(['message' => 'Cart not created'], JsonResponse::HTTP_BAD_REQUEST);
         }
+        return new JsonResponse(['message' => 'New cart created'], JsonResponse::HTTP_CREATED);
+    }
+
+    #[Route('/carts/clear', name: 'clear_cart', methods: ['POST'])]
+    public function clearCart(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $this->clearCart->execute($data['cartId']);
+        return new JsonResponse(['status' => 'Cart cleared'], JsonResponse::HTTP_OK);
     }
 }

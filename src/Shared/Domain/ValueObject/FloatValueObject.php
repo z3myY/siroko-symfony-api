@@ -18,6 +18,11 @@ class FloatValueObject implements ValueObjectInterface
         return new static($value);
     }
 
+    public static function fromString(string $value): static
+    {
+        return new static((float)$value);
+    }
+
     public static function fromNullable(?float $value): static|null
     {
         return $value !== null ? new static($value) : null;

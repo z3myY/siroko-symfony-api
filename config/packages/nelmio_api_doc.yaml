@@ -13,6 +13,39 @@ nelmio_api_doc:
                             {type: integer, example: 12}
                         name:
                             {type: string, example: "SIROKO M2 BLACK"}
+                ProductResponse:
+                    type: object
+                    properties:
+                        id:
+                            {type: integer, example: 12}
+                        name:
+                            {type: string, example: "SIROKO M2 BLACK"}
+                        description:
+                            {type: string, example: "The SIROKO M2 BLACK is the best cycling glasses in the market"}
+                        price:
+                            {type: number, example: 49.99}
+                        stock:
+                            {type: integer, example: 100}
+                        image_url:
+                            {type: string, example: "https://siroko.com/123.jpg"}
+                        category:
+                            {type: string, example: "Cycling Glasses"}
+                        sku:
+                            {type: string, example: "K3S-012"}
+                        availability:
+                            {type: string, example: "In Stock"}
+                        discount:
+                            {type: number, example: 20.0}
+                        brand:
+                            {type: string, example: "SIROKO"}
+                        rating:
+                            {type: number, example: 4.8}
+                        reviews:
+                            {type: integer, example: 410}
+                ProductsResponse:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ProductResponse'
     areas: # to filter documented areas
         default:
             path_patterns: # Accepts routes under /api except /api/doc

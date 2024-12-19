@@ -11,6 +11,7 @@
     "doctrine/doctrine-migrations-bundle": "^3.2",
     "doctrine/orm": "^2.14",
     "nelmio/api-doc-bundle": "^4.23",
+    "nelmio/cors-bundle": "^2.5",
     "symfony/asset": "6.2.*",
     "symfony/cache": "6.2.*",
     "symfony/console": "6.2.*",

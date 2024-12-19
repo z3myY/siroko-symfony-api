@@ -8,7 +8,6 @@ use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;
 use App\Shared\Domain\ValueObject\StringValueObject;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class ProductRepository
@@ -18,7 +17,6 @@ class ProductRepository implements ProductRepositoryInterface
 {
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private Connection $connection)
     {
     }
@@ -32,36 +30,28 @@ class ProductRepository implements ProductRepositoryInterface
             ->where('id = :id')
             ->setParameter('id', $id);
         
-        $result = $queryBuilder->executeQuery()->fetchAssociative();
+        $product = $queryBuilder->executeQuery()->fetchAssociative();
 
-        if (!$result) {
+        if (!$product) {
             return null;
         }
 
-        return $this->hydrateResult($result);
-    }
-
-    public function findBySku(string $sku): ?Product
-    {
-        return $this->entityManager->getRepository(Product::class)->findOneBy(['sku' => $sku]);
-    }
-
-    public function save(Product $product): void
-    {
-        $this->entityManager->persist($product);
-        $this->entityManager->flush();
-    }
-
-    public function delete(Product $product): void
-    {
-        $this->entityManager->remove($product);
-        $this->entityManager->flush();
+        return $this->hydrateResult($product);
     }
 
     public function list(): array
     {
-        $products = $this->entityManager->getRepository(Product::class)->findAll();
-        return array_map(fn(Product $product) => $product->serialize(), $products);
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder
+            ->select('*')
+            ->from('products');
+        
+        $products = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        if (!$products) {
+            return [];
+        }
+        return array_map(fn(array $productData) => $this->hydrateResult($productData)->serialize(), $products);
     }
 
     function hydrateResult(array $result): Product 
