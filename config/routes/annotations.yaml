@@ -2,10 +2,6 @@ cart_controllers:
     resource: ../../src/Cart/Infrastructure/Controller
     type: attribute
 
-item_controllers:
-    resource: ../../src/Item/Infrastructure/Controller
-    type: attribute
-
 product_controllers:
     resource: ../../src/Product/Infrastructure/Controller
     type: attribute

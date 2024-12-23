@@ -5,7 +5,6 @@ clone:
 
 create-env:
 	cp .docker/.env.nginx .docker/.env.nginx.local
-	sed -i 's/NGINX_BACKEND_DOMAIN=.*/NGINX_BACKEND_DOMAIN=localhost/' .docker/.env.nginx.local
 
 up:
 	cd .docker && docker compose up -d
