@@ -109,6 +109,7 @@ class ProductTest extends TestCase
             'brand' => 'Test Brand',
             'rating' => 4.5,
             'reviews' => 100,
+            'priceWithDiscount' => 89.99
         ];
 
         $this->assertSame($expected, $product->serialize());

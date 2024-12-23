@@ -53,12 +53,20 @@ class IntValueObject implements ValueObjectInterface
 
     public function incrementBy(int $quantity): self
     {
-        return new self($this->value + $quantity);
+        $this->value += $quantity;
+        return $this;
     }
 
     public function decrementBy(int $quantity): self
     {
-        return new self($this->value - $quantity);
+        $this->value -= $quantity;
+        return $this;
+    }
+
+    public function multiplyBy(int $quantity): self
+    {
+        $this->value *= $quantity;
+        return $this;
     }
 
     public function jsonSerialize(): int

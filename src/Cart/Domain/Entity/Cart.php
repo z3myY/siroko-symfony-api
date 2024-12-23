@@ -6,6 +6,7 @@ namespace App\Cart\Domain\Entity;
 
 use App\Shared\Domain\AggregateRoot;
 use App\Cart\Domain\Entity\CartProduct;
+use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;
 
 /**
@@ -32,25 +33,29 @@ final class Cart extends AggregateRoot
         return $this->userId;
     }
 
+    /**
+     * @return CartProduct[]
+     */
     public function products(): array
     {
         return $this->products;
     }
 
-    public function addProduct(CartProduct $cartProduct): void
+    public function addProduct(CartProduct $cartProduct): CartProduct
     {
         foreach ($this->products as $existingProduct) {
             if ($existingProduct->productId()->equalsTo($cartProduct->productId())) {
                 $existingProduct->increaseQuantity($cartProduct->quantity());
-                return;
+                return $existingProduct;
             }
         }
         $this->products[] = $cartProduct;
+        return $cartProduct;
     }
 
     public function removeProduct(IntValueObject $productId): void
     {
-        $this->products = array_values(array_filter($this->products, fn(?CartProduct $product) => $product !== null && !$product->productId()->equalsTo($productId)));
+        $this->products = array_values(array_filter($this->products, fn(CartProduct $product) => !$product->productId()->equalsTo($productId)));
     }
 
     public function clearProducts(): void
@@ -60,7 +65,20 @@ final class Cart extends AggregateRoot
 
     public function totalProducts(): IntValueObject
     {
-        return IntValueObject::fromInt(count($this->products));
+        $total = 0;
+        foreach ($this->products as $product) {
+            $total += $product->quantity()->value();
+        }
+        return IntValueObject::fromInt($total);
+    }
+
+    public function totalPrice(): FloatValueObject
+    {
+        $total = 0;
+        foreach ($this->products as $product) {
+            $total += $product->totalPrice()->value();
+        }
+        return FloatValueObject::from($total);
     }
 
     public function getProduct(IntValueObject $productId): ?CartProduct
@@ -90,7 +108,9 @@ final class Cart extends AggregateRoot
         return [
             'id' => $this->id?->value(),
             'userId' => $this->userId->value(),
-            'products' => array_map(fn(CartProduct $product) => $product->serialize(), $this->products)
+            'products' => array_map(fn(CartProduct $product) => $product->serialize(), $this->products),
+            'totalProducts' => $this->totalProducts()->value(),
+            'totalPrice' => $this->totalPrice()->value()
         ];
     }
 }

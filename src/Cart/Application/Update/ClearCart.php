@@ -13,13 +13,13 @@ final class ClearCart
     {
     }
 
-    public function execute(IntValueObject $cartId): void
+    public function execute(int $cartId): void
     {
-        $cart = $this->cartRepository->findById($cartId);
+        $cart = $this->cartRepository->findById(IntValueObject::fromInt($cartId));
 
         if ($cart) {
             $cart->clearProducts();
-            $this->cartRepository->save($cart);
+            $this->cartRepository->clear($cart);
         }
     }
 }

@@ -99,6 +99,12 @@ final class Product extends AggregateRoot
         return $this->reviews;
     }
 
+    public function priceWithDiscount(): FloatValueObject
+    {
+        $discountedPrice = $this->price->value() - ($this->price->value() * $this->discount->value() / 100);
+        return FloatValueObject::from(round($discountedPrice, 2));
+    }
+
     public function serialize(): array
     {
         return [
@@ -115,6 +121,7 @@ final class Product extends AggregateRoot
             'brand' => $this->brand && $this->brand->value() !== '' ? $this->brand->value() : null,
             'rating' => $this->rating ? $this->rating->value() : null,
             'reviews' => $this->reviews ? $this->reviews->value() : null,
+            'priceWithDiscount' => $this->priceWithDiscount()->value()
         ];
     }
 

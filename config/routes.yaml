@@ -9,3 +9,11 @@ item_controllers:
 product_controllers:
     resource: ../src/Product/Infrastructure/Controller
     type: attribute
+
+user_controllers:
+    resource: ../src/User/Infrastructure/Controller
+    type: attribute
+
+order_controllers:
+    resource: ../src/Order/Infrastructure/Controller
+    type: attribute

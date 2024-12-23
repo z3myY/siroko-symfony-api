@@ -21,14 +21,14 @@ class ProductRepository implements ProductRepositoryInterface
     {
     }
 
-    public function findById(int $id): ?Product
+    public function findById(IntValueObject $id): ?Product
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->select('*')
             ->from('products')
             ->where('id = :id')
-            ->setParameter('id', $id);
+            ->setParameter('id', $id->value());
         
         $product = $queryBuilder->executeQuery()->fetchAssociative();
 
@@ -52,6 +52,19 @@ class ProductRepository implements ProductRepositoryInterface
             return [];
         }
         return array_map(fn(array $productData) => $this->hydrateResult($productData)->serialize(), $products);
+    }
+
+    public function updateStock(Product $product): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder
+            ->update('products')
+            ->set('stock', ':stock')
+            ->where('id = :id')
+            ->setParameter('stock', $product->stock()->value())
+            ->setParameter('id', $product->id()->value());
+        
+        $queryBuilder->executeStatement();
     }
 
     function hydrateResult(array $result): Product 

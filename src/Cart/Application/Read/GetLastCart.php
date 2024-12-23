@@ -2,20 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Cart\Application\Update;
+namespace App\Cart\Application\Read;
 
 use App\Cart\Domain\Repository\CartRepositoryInterface;
-use App\Shared\Domain\ValueObject\IntValueObject;
 
-final class GetCart
+/**
+ * Class GetLastCart
+ * @package App\Cart\Application\Read
+ */
+final class GetLastCart
 {
     public function __construct(private CartRepositoryInterface $cartRepository)
     {
     }
 
-    public function execute(IntValueObject $cartId): array
+    public function execute(): array
     {
-        $cart = $this->cartRepository->findById($cartId);
+        $cart = $this->cartRepository->lastCart();
 
         if (!$cart) {
             throw new \Exception('Cart not found');

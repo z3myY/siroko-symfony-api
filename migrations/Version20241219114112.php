@@ -22,7 +22,7 @@ final class Version20241219114112 extends AbstractMigration
         $this->addSql('
             CREATE TABLE users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255) NOT NULL,
+                user_name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -46,6 +46,30 @@ final class Version20241219114112 extends AbstractMigration
                 product_id VARCHAR(255) NOT NULL,
                 quantity INT NOT NULL,
                 FOREIGN KEY (cart_id) REFERENCES carts(id)
+            );
+        ');
+
+        // Create orders table
+        $this->addSql('
+            CREATE TABLE orders (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                total_price DECIMAL(10, 2) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            );'
+        );
+
+        // Create order_products table
+        $this->addSql('
+            CREATE TABLE order_products (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                order_id INT NOT NULL,
+                product_id VARCHAR(255) NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                price DECIMAL(10, 2) NOT NULL,
+                quantity INT NOT NULL,
+                FOREIGN KEY (order_id) REFERENCES orders(id)
             );
         ');
     }

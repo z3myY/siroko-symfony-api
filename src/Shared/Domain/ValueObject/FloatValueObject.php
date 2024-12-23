@@ -43,6 +43,12 @@ class FloatValueObject implements ValueObjectInterface
         return static::class === \get_class($other) && $this->value > $other->value;
     }
 
+    public function multiplyBy(int $quantity): self
+    {
+        $this->value *= $quantity;
+        return $this;
+    }
+
     final public function jsonSerialize(): float
     {
         return $this->value;
