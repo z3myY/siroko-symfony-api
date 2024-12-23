@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Cart\Application\Read;
 
+use App\Cart\Application\Create\AddCart;
 use App\Cart\Domain\Repository\CartRepositoryInterface;
 
 /**
@@ -12,7 +13,10 @@ use App\Cart\Domain\Repository\CartRepositoryInterface;
  */
 final class GetLastCart
 {
-    public function __construct(private CartRepositoryInterface $cartRepository)
+    public function __construct(
+        private CartRepositoryInterface $cartRepository,
+        private AddCart $addCart
+        )
     {
     }
 
@@ -21,9 +25,9 @@ final class GetLastCart
         $cart = $this->cartRepository->lastCart();
 
         if (!$cart) {
-            throw new \Exception('Cart not found');
+            $cart = $this->addCart->execute(1);
         }
-
+        
         return $cart->serialize();
     }
 }

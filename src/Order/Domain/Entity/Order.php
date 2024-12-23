@@ -23,7 +23,7 @@ final class Order extends AggregateRoot
         return $this->userId;
     }
 
-    public function id(): IntValueObject
+    public function id(): ?IntValueObject
     {
         return $this->id;
     }
@@ -40,7 +40,7 @@ final class Order extends AggregateRoot
 
     public function totalPrice(): FloatValueObject
     {
-        return new FloatValueObject(array_sum(array_map(fn(OrderProducts $product) => $product->totalPrice()->value(), $this->products)));
+        return FloatValueObject::from((array_sum(array_map(fn(array $product) => $product['price'] * $product['quantity'], $this->products))));
     }
 
     public static function load(

@@ -1,6 +1,7 @@
 let cartId;
 let totalPrice = 0;
 let totalItems = 0;
+let userId = 1;
 
 $(document).ready(function () {
   cart();
@@ -28,6 +29,7 @@ function setupEventListeners() {
   $(document).on('click', '.add-to-cart', addProductToCart);
   $(document).on('click', '.increase-product', increaseProduct);
   $(document).on('click', '.reduce-product', reduceProduct);
+  $('#checkout').click(checkout);
 }
 
 function updateCartSummary() {
@@ -247,4 +249,43 @@ function countProducts() {
     }
   });
   return totalItems;
+}
+
+function checkout() {
+  const totalItems = countProducts();
+  if (totalItems > 0) {
+    $.ajax({
+      url: '/orders',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        cartId: cartId,
+        customerId: userId
+      }),
+      success: function (response) {
+        clearCart();
+        alert('Order placed successfully!');
+        //window.location.href = '/orders';
+      },
+      error: function () {
+        alert('Failed to place order.');
+      }
+    });
+  } else {
+    alert('Please add products to cart before proceeding to checkout.');
+  }
+}
+
+function clearCart() {
+  $.ajax({
+    url: `/carts/${cartId}/products`,
+    method: 'DELETE',
+    success: function () {
+      $('#cart-items').empty();
+      updateCartSummary();
+    },
+    error: function () {
+      alert('Failed to clear cart.');
+    }
+  });
 }

@@ -16,18 +16,23 @@ final class AddCart
     {
     }
 
-    public function execute(int $userId): bool
+    public function execute(int $userId): Cart
     {
-        if ($this->cartRepository->findByUserId(IntValueObject::fromInt($userId)) !== null) {
-            throw new \Exception('Cart already exists for this user');
-        }
-        $userId = IntValueObject::fromInt($userId);
-        $cart = Cart::load(null, $userId);
-        $cart = $this->cartRepository->create($cart);
+        $userIdValueObject = IntValueObject::fromInt($userId);
+        $existingCart = $this->cartRepository->findByUserId($userIdValueObject);
 
-        if ($cart === null) {
+        if ($existingCart !== null) {
+            return $existingCart;
+        }
+
+        $cart = Cart::load(null, $userIdValueObject);
+        $newCartId = $this->cartRepository->create($cart);
+        $createdCart = $this->cartRepository->findByUserId($userIdValueObject);
+
+        if ($createdCart === null) {
             throw new \Exception('Cart not created');
         }
-        return $cart >= 1;
+
+        return $createdCart;
     }
 }

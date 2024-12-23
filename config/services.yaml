@@ -23,3 +23,7 @@ services:
     # please note that last definitions always *replace* previous ones
     App\EventListener\Exception\ExceptionHandler:
        tags: [kernel.event_listener]
+
+    App\Order\Infrastructure\Service\CartService:
+        arguments:
+            $httpClient: '@http_client'

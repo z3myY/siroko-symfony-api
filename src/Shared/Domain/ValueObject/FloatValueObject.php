@@ -45,8 +45,7 @@ class FloatValueObject implements ValueObjectInterface
 
     public function multiplyBy(int $quantity): self
     {
-        $this->value *= $quantity;
-        return $this;
+        return new self($this->value * $quantity);
     }
 
     final public function jsonSerialize(): float

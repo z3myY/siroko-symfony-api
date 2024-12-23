@@ -22,11 +22,13 @@ class DbalCartRepository implements CartRepositoryInterface
 
     public function create(Cart $cart): int
     {
-        return $this->connection->createQueryBuilder()
+        $this->connection->createQueryBuilder()
             ->insert('carts')
             ->values(['user_id' => ':user_id'])
             ->setParameter('user_id', $cart->userId()->value())
             ->executeStatement();
+
+        return (int) $this->connection->lastInsertId();
     }
 
     public function findAll(): array

@@ -41,8 +41,8 @@ final class OrderController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $customerId = $data['userId'];
-        $cartId = $data['products'];
+        $customerId = $data['customerId'];
+        $cartId = $data['cartId'];
 
         $this->createOrder->execute($customerId, $cartId);
 

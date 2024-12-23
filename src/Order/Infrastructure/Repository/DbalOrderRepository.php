@@ -14,12 +14,19 @@ final class DbalOrderRepository implements OrderRepositoryInterface
     {
     }
 
-    public function save(Order $order): void
+    public function save(Order $order): int
     {
-        $this->connection->insert('orders', [
-            'user_id' => $order->userId()->value(),
-            'total_price' => $order->totalPrice()->value()
-        ]);
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $queryBuilder->insert('orders')
+            ->setValue('user_id', ':user_id')
+            ->setValue('total_price', ':total_price')
+            ->setParameter('user_id', $order->userId()->value())
+            ->setParameter('total_price', $order->totalPrice()->value());
+
+        $queryBuilder->executeStatement();
+
+        return (int) $this->connection->lastInsertId();
     }
 }
 

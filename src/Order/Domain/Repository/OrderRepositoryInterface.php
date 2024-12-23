@@ -8,5 +8,5 @@ use App\Order\Domain\Entity\Order;
 
 interface OrderRepositoryInterface
 {
-    public function save(Order $order): void;
+    public function save(Order $order): int;
 }
