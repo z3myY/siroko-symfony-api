@@ -71,6 +71,7 @@ Por falta de tiempo me ha sido imposible hacer más.
 Simplemente comentar que soy consciente de que faltan algunas cosas, pero por temas de tiempo me es imposible ahora mismo realizar más y tampoco quería demorarme mucho más tiempo, que en estas fechas me ha costado sacar algo de tiempo para realizar la prueba. Algunas de estas cosas que no me ha dado tiempo son:
 
 - Mejor control de excepciones y extructuración de ellas.
+- Manejo de sesiones de usuario con tokens y seguridad.
 - Mejorar el tiempo de respuesta cacheando las respuestas con Redis.
 - Y cosas que refactorizar y optimizar, como siempre, todo se puede mejorar.
 
