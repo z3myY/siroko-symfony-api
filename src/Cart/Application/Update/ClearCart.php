@@ -7,7 +7,7 @@ namespace App\Cart\Application\Update;
 use App\Cart\Domain\Repository\CartRepositoryInterface;
 use App\Shared\Domain\ValueObject\IntValueObject;
 
-final class ClearCart
+class ClearCart
 {
     public function __construct(private CartRepositoryInterface $cartRepository)
     {

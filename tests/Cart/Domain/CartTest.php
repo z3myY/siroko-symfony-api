@@ -5,6 +5,8 @@ use App\Cart\Domain\Entity\Cart;
 use App\Cart\Domain\Entity\CartProduct;
 use App\Shared\Domain\ValueObject\IntValueObject;
 use PHPUnit\Framework\TestCase;
+use App\Shared\Domain\ValueObject\StringValueObject;
+use App\Shared\Domain\ValueObject\FloatValueObject;
 
 /**
  * Class CartTest
@@ -12,72 +14,69 @@ use PHPUnit\Framework\TestCase;
  */
 class CartTest extends TestCase
 {
+    private $cartId;
+    private $userId;
+    private $productId;
+    private $quantity;
+    private $name;
+    private $price;
+
+    protected function setUp(): void
+    {
+        $this->cartId = IntValueObject::fromInt(5);
+        $this->userId = IntValueObject::fromInt(7);
+        $this->productId = IntValueObject::fromInt(1);
+        $this->quantity = IntValueObject::fromInt(2);
+        $this->name = StringValueObject::fromString('Product 1');
+        $this->price = FloatValueObject::from(10.5);
+    }
+
     public function testAddProduct(): void
     {
-        $cartId = IntValueObject::fromInt(5);
-        $userId = IntValueObject::fromInt(7);
-        $productId = IntValueObject::fromInt(1);    
-        $quantity = IntValueObject::fromInt(2);
-
-
-        $cart = new Cart($cartId, $userId);
-        $product = new CartProduct($cartId, $productId, $quantity);
+        $cart = new Cart($this->cartId, $this->userId);
+        $product = new CartProduct($this->cartId, $this->productId, $this->quantity, $this->name, $this->price);
 
         $cart->addProduct($product);
 
-        $this->assertSame(1, $cart->totalProducts()->value());
+        $this->assertSame(2, $cart->totalProducts()->value());
         $this->assertSame(1, $cart->products()[0]->productId()->value());
         $this->assertSame(2, $cart->products()[0]->quantity()->value());
     }
 
     public function testAddSameProduct(): void
     {
-        $cartId = IntValueObject::fromInt(5);
-        $userId = IntValueObject::fromInt(7);
-        $productId = IntValueObject::fromInt(1);
-        $quantity = IntValueObject::fromInt(2);
-
-        $cart = new Cart($cartId, $userId);
-        $product = new CartProduct($cartId, $productId, $quantity);
+        $cart = new Cart($this->cartId, $this->userId);
+        $product = new CartProduct($this->cartId, $this->productId, $this->quantity, $this->name, $this->price);
 
         $cart->addProduct($product);
         $cart->addProduct($product);
 
-        $this->assertSame(1, $cart->totalProducts()->value());
+        $this->assertSame(4, $cart->totalProducts()->value());
         $this->assertSame(1, $cart->products()[0]->productId()->value());
         $this->assertSame(4, $cart->products()[0]->quantity()->value());
     }
 
     public function testRemoveProduct(): void
     {
-        $cartId = IntValueObject::fromInt(5);
-        $userId = IntValueObject::fromInt(7);
-        $productId1 = IntValueObject::fromInt(1);
         $productId2 = IntValueObject::fromInt(2);
-        $quantity = IntValueObject::fromInt(2);
 
-        $cart = new Cart($cartId, $userId);
-        $product1 = new CartProduct($cartId, $productId1, $quantity);
-        $product2 = new CartProduct($cartId, $productId2, $quantity);
+        $cart = new Cart($this->cartId, $this->userId);
+        $product1 = new CartProduct($this->cartId, $this->productId, $this->quantity, $this->name, $this->price);
+        $product2 = new CartProduct($this->cartId, $productId2, $this->quantity, $this->name, $this->price);
 
         $cart->addProduct($product1);
         $cart->addProduct($product2);
 
-        $cart->removeProduct($productId1);
+        $cart->removeProduct($this->productId);
 
-        $this->assertSame(1, $cart->totalProducts()->value());
+        $this->assertSame(2, $cart->totalProducts()->value());
         $this->assertSame(2, $cart->products()[0]->productId()->value());
     }
 
     public function testClearProducts(): void
     {
-        $cartId = IntValueObject::fromInt(5);
-        $userId = IntValueObject::fromInt(7);
-        $productId = IntValueObject::fromInt(1);
-        $quantity = IntValueObject::fromInt(2);
-
-        $cart = new Cart($cartId, $userId);
-        $product = new CartProduct($cartId, $productId, $quantity);
+        $cart = new Cart($this->cartId, $this->userId);
+        $product = new CartProduct($this->cartId, $this->productId, $this->quantity, $this->name, $this->price);
 
         $cart->addProduct($product);
         $cart->clearProducts();
@@ -88,13 +87,8 @@ class CartTest extends TestCase
 
     public function testSerialize(): void
     {
-        $cartId = IntValueObject::fromInt(5);
-        $userId = IntValueObject::fromInt(7);
-        $productId = IntValueObject::fromInt(1);
-        $quantity = IntValueObject::fromInt(2);
-
-        $cart = new Cart($cartId, $userId);
-        $product = new CartProduct($cartId, $productId, $quantity);
+        $cart = new Cart($this->cartId, $this->userId);
+        $product = new CartProduct($this->cartId, $this->productId, $this->quantity, $this->name, $this->price);
 
         $cart->addProduct($product);
 
@@ -105,9 +99,13 @@ class CartTest extends TestCase
                 [
                     'cartId' => 5,
                     'productId' => 1,
-                    'quantity' => 2
+                    'quantity' => 2,
+                    'name' => 'Product 1',
+                    'price' => 10.5
                 ]
-            ]
+            ],
+            'totalProducts' => 2,
+            'totalPrice' => 21.0
         ];
 
         $this->assertSame($expected, $cart->serialize());

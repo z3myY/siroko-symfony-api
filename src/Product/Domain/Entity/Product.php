@@ -13,7 +13,7 @@ use App\Shared\Domain\ValueObject\StringValueObject;
  * Class Product
  * @package App\Product\Domain\Entity
  */
-final class Product extends AggregateRoot
+class Product extends AggregateRoot
 {
     public function __construct(
         private IntValueObject $id,

@@ -12,7 +12,7 @@ use App\Shared\Domain\ValueObject\StringValueObject;
  * Class CartProduct
  * @package App\Cart\Domain\Entity
  */
-final class CartProduct
+class CartProduct
 {
 
     public function __construct(

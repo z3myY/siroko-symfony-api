@@ -3,7 +3,7 @@
 namespace App\Cart\Application\Update;
 
 use App\Cart\Domain\Repository\CartRepositoryInterface;
-use App\Product\Domain\Service\DecrementProductStockService;
+
 use App\Product\Domain\Service\IncrementProductStockService;
 use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;

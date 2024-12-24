@@ -11,7 +11,7 @@ use App\Product\Domain\Repository\ProductRepositoryInterface;
  * IncrementProductStockService
  * @package App\Product\Domain\Service
  */
-final class IncrementProductStockService
+class IncrementProductStockService
 {
     public function __construct(private ProductRepositoryInterface $productRepository)
     {

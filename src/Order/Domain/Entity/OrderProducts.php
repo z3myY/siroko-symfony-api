@@ -9,7 +9,7 @@ use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;
 use App\Shared\Domain\ValueObject\StringValueObject;
 
-final class OrderProducts extends AggregateRoot
+class OrderProducts extends AggregateRoot
 {
     public function __construct(
         private IntValueObject $orderId,

@@ -13,7 +13,7 @@ use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;
 use App\Shared\Domain\ValueObject\StringValueObject;
 
-final class CreateOrder
+class CreateOrder
 {
     public function __construct(
         private CartService $cartService,

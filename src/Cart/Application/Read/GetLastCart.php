@@ -11,7 +11,7 @@ use App\Cart\Domain\Repository\CartRepositoryInterface;
  * Class GetLastCart
  * @package App\Cart\Application\Read
  */
-final class GetLastCart
+class GetLastCart
 {
     public function __construct(
         private CartRepositoryInterface $cartRepository,

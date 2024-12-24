@@ -13,7 +13,7 @@ use App\Shared\Domain\ValueObject\IntValueObject;
  * Class Cart
  * @package App\Cart\Domain\Entity
  */
-final class Cart extends AggregateRoot
+class Cart extends AggregateRoot
 {
     public function __construct(
         private ?IntValueObject $id,

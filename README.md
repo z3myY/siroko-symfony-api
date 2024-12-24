@@ -39,10 +39,12 @@ La APP:
 
 ## Extras
 
-Como mejora de la aplicación he añadido lo siguiente:
+Como mejora de la aplicación se podría haber añadido lo siguiente:
 
 - Peticiones a API cacheadas temporalmente mediante Redis.
-- Documentacion del API mediante OpenAPI. Usando en este caso [NelmioAPIBundle].
+- Documentacion del API mediante OpenAPI. Usando en este caso [NelmioAPIBundle]. Hay algo hecho pero faltaría bastante documentación.
+
+Por falta de tiempo me ha sido imposible hacer más.
 
 ## Instalación
 
@@ -54,16 +56,13 @@ Como mejora de la aplicación he añadido lo siguiente:
 
 1. Clonar el repo 😁, lanzando el comando `git clone https://github.com/z3myY/siroko-symfony-api.git` en la carpeta que quieras en local.
 2. Crear el archivo `./.docker/.env.nginx.local` usando `./.docker/.env.nginx` como plantilla. El valor de la variable `NGINX_BACKEND_DOMAIN` es el `server_name` usado en NGINX. Para no complicarme simplemente le he puesto `localhost`.
-3. Ir a la carpeta `./docker` y ejecutar `docker compose up -d` para levantar los contenedores.
-4. He estado trabajando directamente en el contenedor de `php`, para no tener que estar preocupándome de las versiones instaladas o cual estoy usando en ese momento, así me olvido de conflictos. Este proyecto está configurado con la extensión [Remote Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) de Visual Studio Code, simplemente lanzando el comando `Reopen in container` de esta extensión desde VS (arriba en la barra de búsqueda con el signo `>`), puedes abrir el proyecto y trabajar directamente desde el contenedor.
-
-![Alt text](image-1.png)
-
-5. Una vez dentro del contenedor `php`, lanzamos `composer install` para instalar las dependencias de la carpeta `/var/www/symfony`. Si no lo realizamos al intentar cargar nuestra app nos saldría el siguiente error 👇🏽. 
-
-![Alt text](image.png)
+3. Lanzar comando `make up`. O ir a la carpeta `./docker` y ejecutar `docker compose up -d` para levantar los contenedores.
+4. Lanzar comando `make install` para instalar las dependencias. O dentro del contenedor `php`, lanzamos `composer install`.
+5. Lanzar comando `make migrate` para las migraciones de la base de datos.
 
 #### ¡Con esto ya podríamos acceder a nuestra [SIROKO API](http://localhost/siroko/v1/public/doc)!
+
+### ¡Y al carrito! [Carrito Siroko](http://localhost/index)
 
 # Requisitos prueba técnica
 
@@ -72,11 +71,12 @@ Como mejora de la aplicación he añadido lo siguiente:
 Simplemente comentar que soy consciente de que faltan algunas cosas, pero por temas de tiempo me es imposible ahora mismo realizar más y tampoco quería demorarme mucho más tiempo, que en estas fechas me ha costado sacar algo de tiempo para realizar la prueba. Algunas de estas cosas que no me ha dado tiempo son:
 
 - Mejor control de excepciones y extructuración de ellas.
+- Mejorar el tiempo de respuesta cacheando las respuestas con Redis.
 - Y cosas que refactorizar y optimizar, como siempre, todo se puede mejorar.
 
 Y ya sin más...
 
-**¡¡Feliz año nuevo!!**
+**¡¡Felices fiestas y año nuevo!!**
 
 
 ## Contexto

@@ -11,7 +11,7 @@ use App\Shared\Domain\ValueObject\IntValueObject;
  * Class GetCart
  * @package App\Cart\Application\Read
  */
-final class GetCart
+class GetCart
 {
     public function __construct(private CartRepositoryInterface $cartRepository)
     {

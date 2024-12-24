@@ -11,7 +11,7 @@ use App\Cart\Domain\Entity\Cart;
  * Class GetAllCart
  * @package App\Cart\Application\Read
  */
-final class GetAllCarts
+class GetAllCarts
 {
     public function __construct(private CartRepositoryInterface $cartRepository)
     {

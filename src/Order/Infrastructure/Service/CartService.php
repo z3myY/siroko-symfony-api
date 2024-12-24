@@ -7,7 +7,7 @@ namespace App\Order\Infrastructure\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class CartService extends AbstractController
+class CartService extends AbstractController
 {
     public function __construct(private HttpClientInterface $httpClient)
     {

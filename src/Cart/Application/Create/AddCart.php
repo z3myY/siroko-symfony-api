@@ -10,7 +10,7 @@ use App\Shared\Domain\ValueObject\IntValueObject;
  * Class AddCart
  * @package App\Cart\Application\Create
  */
-final class AddCart
+class AddCart
 {
     public function __construct(private CartRepositoryInterface $cartRepository)
     {
@@ -26,7 +26,7 @@ final class AddCart
         }
 
         $cart = Cart::load(null, $userIdValueObject);
-        $newCartId = $this->cartRepository->create($cart);
+        $this->cartRepository->create($cart);
         $createdCart = $this->cartRepository->findByUserId($userIdValueObject);
 
         if ($createdCart === null) {

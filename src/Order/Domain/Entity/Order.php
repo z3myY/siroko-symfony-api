@@ -8,7 +8,7 @@ use App\Shared\Domain\AggregateRoot;
 use App\Shared\Domain\ValueObject\FloatValueObject;
 use App\Shared\Domain\ValueObject\IntValueObject;
 
-final class Order extends AggregateRoot
+class Order extends AggregateRoot
 {
     public function __construct(
         private IntValueObject $userId,

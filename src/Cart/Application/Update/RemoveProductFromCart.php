@@ -13,7 +13,7 @@ use App\Shared\Domain\ValueObject\IntValueObject;
  * Clss RemoveProductFromCart
  * @package App\Cart\Application\Update
  */
-final class RemoveProductFromCart
+class RemoveProductFromCart
 {
     public function __construct(
         private CartProductRepositoryInterface $cartProductRepository,
@@ -26,7 +26,16 @@ final class RemoveProductFromCart
     public function execute(IntValueObject $cartId, IntValueObject $productId): void
     {
         $cart = $this->cartRepository->findById($cartId);
+
+        if (!$cart) {
+            return;
+        }
+
         $cartProduct = $cart->getProduct($productId);
+
+        if (!$cartProduct) {
+            return;
+        }
         $cartProduct = $this->cartProductRepository->find($cartProduct);
 
 

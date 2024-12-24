@@ -44,6 +44,10 @@ final class OrderController extends AbstractController
         $customerId = $data['customerId'];
         $cartId = $data['cartId'];
 
+        if (!$customerId || !$cartId || !is_int($customerId) || !is_int($cartId)) {
+            return new JsonResponse(['message' => 'Invalid data'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         $this->createOrder->execute($customerId, $cartId);
 
         return new JsonResponse(['message' => 'Order created'], JsonResponse::HTTP_CREATED);

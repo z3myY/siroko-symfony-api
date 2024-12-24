@@ -7,7 +7,7 @@ namespace App\Product\Domain\Service;
 use App\Product\Domain\Repository\ProductRepositoryInterface;
 use App\Shared\Domain\ValueObject\IntValueObject;
 
-final class ProductStockService
+class ProductStockService
 {
     public function __construct(private ProductRepositoryInterface $productRepository)
     {

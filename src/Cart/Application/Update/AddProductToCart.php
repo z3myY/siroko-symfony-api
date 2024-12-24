@@ -9,7 +9,7 @@ use App\Cart\Domain\Repository\CartRepositoryInterface;
 use App\Product\Domain\Service\DecrementProductStockService;
 use App\Product\Domain\Service\ProductStockService;
 
-final class AddProductToCart
+class AddProductToCart
 {
     public function __construct(
         private CartRepositoryInterface $cartRepository,
